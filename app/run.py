@@ -14,6 +14,7 @@ from plotly.graph_objs import Bar
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
+#import custom transformers
 from train_classifier import AddGenre, TokensNumber
 
 
@@ -44,18 +45,28 @@ model = joblib.load("../models/classifier.pkl")
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
+    
+    #plot 1: count of messages per genre
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
     
+    #plot 2: count of messages for each category
+    categories = df.columns.values[4:]
+
+    message_counts = []
+    for category in categories:
+        message_counts.append(df[category].sum())
+    
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
+            
+        #plot 1
         {
             'data': [
                 Bar(
                     x=genre_names,
-                    y=genre_counts
+                    y=genre_counts,
+                    marker=dict(color='#68B6AF')
                 )
             ],
 
@@ -66,6 +77,24 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+           
+        #plot 2
+        {
+            'data': [
+                Bar(
+                    x=categories,
+                    y=message_counts,
+                    marker=dict(color='#7FDBE2')
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of Message Сategories',
+                'yaxis': {
+                    'title': "Count"
                 }
             }
         }
