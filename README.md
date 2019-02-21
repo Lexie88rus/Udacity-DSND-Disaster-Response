@@ -65,6 +65,7 @@ More details on the most important repository files and scripts:
     - combine initial csv datasets into one,
     - split the column, which contains message categories into 36 separate columns for each category,
     - convert all categories to binary features,
+    - remove duplicated rows from the dataset,
     - load the resulting data into sqlite database `DisasterResponse.db`.
 4. __train_classifier.py__ script contains machine learning pipeline to build and evaluate the model to categorize messages:
     - load prepared data from sqlite database `DisasterResponse.db`,
