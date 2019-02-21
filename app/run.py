@@ -11,6 +11,7 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
+from plotly.graph_objs import Histogram
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
@@ -56,6 +57,14 @@ def index():
     message_counts = []
     for category in categories:
         message_counts.append(df[category].sum())
+        
+    #plot 3: count number of tokens per message
+    df_wc = df.copy()
+    df_wc['tokens_num'] = df_wc.apply(lambda row: len(tokenize(row['message'])), axis=1)
+    
+    #plot 4: count number of categories per message
+    df_cat = df.copy()
+    df_cat['categories_num'] = df_cat.iloc[:, 3:].sum(1)
     
     # create visuals
     graphs = [
@@ -95,6 +104,46 @@ def index():
                 'title': 'Distribution of Message Сategories',
                 'yaxis': {
                     'title': "Count"
+                }
+            }
+        }, 
+                
+        #plot 3
+        {
+            'data': [
+                Histogram(
+                    x=df_wc['tokens_num'],
+                    marker=dict(color='#82C5A0')
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of number of tokens per message',
+                'yaxis': {
+                    'title': "Number of messages"
+                },
+                'xaxis': {
+                    'title': "Number of tokens per message"
+                }
+            }
+        },
+                
+        #plot 4
+        {
+            'data': [
+                Histogram(
+                    x = df_cat['categories_num'],
+                    marker=dict(color='#EED2BB')
+                )
+            ],
+
+            'layout': {
+                'title': 'Distribution of number of categories per message',
+                'yaxis': {
+                    'title': "Number of messages"
+                },
+                'xaxis': {
+                    'title': "Number of categories per message"
                 }
             }
         }
