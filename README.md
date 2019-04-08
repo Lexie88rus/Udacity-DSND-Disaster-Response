@@ -31,6 +31,9 @@ The main page of the web-app contains visualizations of the training dataset use
 The user is also able to input message and get classification results by pressing the button 'Classify Message'. See the page with the classification results:
 ![results page](https://github.com/Lexie88rus/Udacity-DSND-Disaster-Response/blob/master/screenshots/app_classify_screenshot.png)
 
+Demo of the application:
+![demo of disasters responce app](https://github.com/Lexie88rus/Udacity-DSND-Disaster-Response/blob/master/screenshots/demo.gif)
+
 ## Repository Contents
 The repository has the following structure:
 ```
